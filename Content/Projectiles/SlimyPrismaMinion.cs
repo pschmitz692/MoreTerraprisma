@@ -1,4 +1,7 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using MoreTerraprisma.Content.Buffs;
+using rail;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -27,9 +30,21 @@ namespace MoreTerraprisma.Content.Projectiles
          this.hide = true;
         */
 
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Projectile.type] = 1;
+            ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
+
+            Main.projPet[Projectile.type] = true;
+
+            ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
+            ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+        }
+
         public sealed override void SetDefaults()
         {
             Projectile.CloneDefaults(ProjectileID.EmpressBlade);
+            //Projectile.aiStyle = ProjectileID.EmpressBlade;
             AIType = ProjectileID.EmpressBlade;
         }
 
@@ -43,6 +58,27 @@ namespace MoreTerraprisma.Content.Projectiles
             return true;
         }
 
-        
+        public override void AI()
+        {
+            base.AI();
+
+            CheckActive(Main.player[Projectile.owner]);
+        }
+
+        private bool CheckActive(Player owner)
+        {
+            if (owner.dead || !owner.active)
+            {
+                owner.ClearBuff(ModContent.BuffType<SlimyPrismaBuff>());
+                return false;
+            }
+
+            if (owner.HasBuff(ModContent.BuffType<SlimyPrismaBuff>()))
+            {
+                Projectile.timeLeft = 2;
+            }
+
+            return true;
+        }
     }
 }
