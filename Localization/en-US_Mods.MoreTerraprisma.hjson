@@ -1,0 +1,15 @@
+Items: {
+	SlimyPrisma: {
+		Tooltip: pp
+		DisplayName: Slimyprisma
+	}
+}
+
+Buffs: {
+	SlimyPrismaBuff: {
+		DisplayName: Slimy Prisma Buff
+		Description: A slimy Terraprisma is fighting for you
+	}
+}
+
+Projectiles.SlimyPrismaMinion.DisplayName: Slimy Prisma Minion
